@@ -24,7 +24,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker build --build-arg version=latest - < Dockerfile
+          docker build --build-arg ANSIBLE_BUILD_VERSION=latest - < Dockerfile
 
       - name: Push images
         run: |
@@ -45,7 +45,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker build --build-arg version=2.11 - < Dockerfile
+          docker build --build-arg ANSIBLE_BUILD_VERSION=2.11 - < Dockerfile
 
       - name: Push images
         run: |
@@ -66,7 +66,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker build --build-arg version=2.12 - < Dockerfile
+          docker build --build-arg ANSIBLE_BUILD_VERSION=2.12 - < Dockerfile
 
       - name: Push images
         run: |
