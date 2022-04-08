@@ -1,0 +1,11 @@
+ansible-lint>=6.0.2
+dnspython
+molecule>=3.6.1
+molecule-containers>=1.0.2
+molecule-docker>=1.1.0
+molecule-podman>=1.1.0
+netaddr
+psutil
+pycdlib
+yamllint>=1.26.3
+git+https://github.com/vmware/vsphere-automation-sdk-python.git
