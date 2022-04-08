@@ -1,18 +1,14 @@
-name: Build and Push latest image
+name: Release
 
 on:
-  push:
-    # build and push anytime commits are merged to main
-    branches:
-      - main
-  schedule:
-    # build every month
-    - cron: '0 0 2 * *'
+  release:
+    types:
+      - created
 
 jobs:
-  build_and_push_latest:
+  release:
     runs-on: ubuntu-20.04
-    name: Build and push latest tag from devel and on new commits
+    name: Release
     steps:
       - uses: actions/checkout@v2
 
@@ -29,16 +25,21 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          tox -e docker -- --tag=quay.io/lumarel/ee-lint:latest
+          tox -e docker -- --tag=quay.io/lumarel/ee-lint:${{ github.event.release.tag_name }}
+
+      - name: Apply latest tag
+        run: |
+         docker tag quay.io/lumarel/ee-lint:${{ github.event.release.tag_name }} quay.io/lumarel/ee-lint:latest
 
       - name: Push images
         run: |
          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+         docker push quay.io/lumarel/ee-lint:${{ github.event.release.tag_name }}
          docker push quay.io/lumarel/ee-lint:latest
 
-  build_and_push_latest-stable-2_11:
+  release-stable-2_11:
     runs-on: ubuntu-20.04
-    name: Build and push latest tag from devel and on new commits Ansible 2.11
+    name: Release Ansible 2.11
     steps:
       - uses: actions/checkout@v2
 
@@ -57,14 +58,19 @@ jobs:
         run: |
           tox -e docker-stable-2.11 -- --tag=quay.io/lumarel/ee-lint:stable-2.11
 
+      - name: Apply latest tag
+        run: |
+         docker tag quay.io/lumarel/ee-lint:stable-2.11 quay.io/lumarel/ee-lint:${{ github.event.release.tag_name }}-stable-2.11
+
       - name: Push images
         run: |
          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+         docker push quay.io/lumarel/ee-lint:${{ github.event.release.tag_name }}-stable-2.11
          docker push quay.io/lumarel/ee-lint:stable-2.11
 
-  build_and_push_latest-stable-2_12:
+  release-stable-2_12:
     runs-on: ubuntu-20.04
-    name: Build and push latest tag from devel and on new commits Ansible 2.12
+    name: Release Ansible 2.12
     steps:
       - uses: actions/checkout@v2
 
@@ -83,7 +89,12 @@ jobs:
         run: |
           tox -e docker-stable-2.12 -- --tag=quay.io/lumarel/ee-lint:stable-2.12
 
+      - name: Apply latest tag
+        run: |
+         docker tag quay.io/lumarel/ee-lint:stable-2.12 quay.io/lumarel/ee-lint:${{ github.event.release.tag_name }}-stable-2.12
+
       - name: Push images
         run: |
          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+         docker push quay.io/lumarel/ee-lint:${{ github.event.release.tag_name }}-stable-2.12
          docker push quay.io/lumarel/ee-lint:stable-2.12
