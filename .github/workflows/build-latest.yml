@@ -1,0 +1,74 @@
+name: Build and Push latest image
+
+on:
+  push:
+    # build and push anytime commits are merged to main
+    branches:
+      - main
+  schedule:
+    # build every month
+    - cron: '0 0 2 * *'
+
+jobs:
+  build_and_push_latest:
+    runs-on: ubuntu-20.04
+    name: Build and push latest tag from devel and on new commits
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: Build image
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker build --build-arg version=latest - < Dockerfile
+
+      - name: Push images
+        run: |
+         echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+         docker push quay.io/lumarel/ee-lint:latest
+
+  build_and_push_latest-stable-2_11:
+    runs-on: ubuntu-20.04
+    name: Build and push latest tag from devel and on new commits Ansible 2.11
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: Build image
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker build --build-arg version=2.11 - < Dockerfile
+
+      - name: Push images
+        run: |
+         echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+         docker push quay.io/lumarel/ee-lint:stable-2.11
+
+  build_and_push_latest-stable-2_12:
+    runs-on: ubuntu-20.04
+    name: Build and push latest tag from devel and on new commits Ansible 2.12
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: Build image
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker build --build-arg version=2.12 - < Dockerfile
+
+      - name: Push images
+        run: |
+         echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+         docker push quay.io/lumarel/ee-lint:stable-2.12
