@@ -1,36 +1,35 @@
-ARG EE_BUILDER_IMAGE=quay.io/ansible/ansible-builder:latest
+ARG PYTHON_BASE_IMAGE=quay.io/ansible/python-base:latest
+ARG PYTHON_BUILDER_IMAGE=quay.io/ansible/python-builder:latest
+ARG ANSIBLE_BRANCH=""
 
-FROM $EE_BASE_IMAGE as galaxy
-ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS=
-USER root
+FROM $PYTHON_BUILDER_IMAGE as builder
+# =============================================================================
+ARG ANSIBLE_BRANCH
 
-ADD _build /build
-WORKDIR /build
+COPY . /tmp/src
+RUN if [ "$ANSIBLE_BRANCH" != "" ] ; then \
+      echo "Installing requirements.txt / upper-constraints.txt for Ansible $ANSIBLE_BRANCH" ; \
+      cp /tmp/src/tools/requirements-$ANSIBLE_BRANCH.txt /tmp/src/requirements.txt ; \
+      cp /tmp/src/tools/upper-constraints-$ANSIBLE_BRANCH.txt /tmp/src/upper-constraints.txt ; \
+    else \
+      echo "Installing requirements.txt" ; \
+      cp /tmp/src/tools/requirements.txt /tmp/src/requirements.txt ; \
+    fi \
+    && cp /tmp/src/tools/build-requirements.txt /tmp/src/build-requirements.txt \
+    && cp /tmp/src/tools/bindep.txt /tmp/src/bindep.txt
 
-RUN ansible-galaxy role install -r requirements.yml --roles-path /usr/share/ansible/roles
-RUN ansible-galaxy collection install $ANSIBLE_GALAXY_CLI_COLLECTION_OPTS -r requirements.yml --collections-path /usr/share/ansible/collections
-
-FROM $EE_BUILDER_IMAGE as builder
-
-COPY --from=galaxy /usr/share/ansible /usr/share/ansible
-
-ADD _build/bindep.txt bindep.txt
-RUN ansible-builder introspect --sanitize --user-bindep=bindep.txt --user-pip=requirements.txt --write-bindep=/tmp/src/bindep.txt --write-pip=/tmp/src/requirements.txt
+ENV PIP_OPTS=--no-build-isolation
 RUN assemble
 
-FROM $EE_BASE_IMAGE
-USER root
+FROM $PYTHON_BASE_IMAGE
+# =============================================================================
 
-COPY --from=galaxy /usr/share/ansible /usr/share/ansible
+COPY --from=builder /output/ /output
+RUN /output/install-from-bindep \
+  && rm -rf /output
 
-COPY --from=builder /output/ /output/
-RUN /output/install-from-bindep && rm -rf /output/wheels
-RUN alternatives --set python /usr/bin/python3
-COPY --from=quay.io/ansible/receptor:devel /usr/bin/receptor /usr/bin/receptor
-RUN mkdir -p /var/run/receptor
 ADD certs /etc/pki/ca-trust/source/anchors
 RUN update-ca-trust
-ADD run.sh /run.sh
-CMD /run.sh
-USER 1000
-RUN git lfs install
+
+ENTRYPOINT []
+CMD /bin/bash

@@ -38,7 +38,7 @@ jobs:
 
   build_and_push_latest-stable-2_11:
     runs-on: ubuntu-20.04
-    name: Build and push latest tag from devel and on new commits Ansible 2.11
+    name: Build and push stable-2.11 tag from devel
     steps:
       - uses: actions/checkout@v2
 
@@ -64,7 +64,7 @@ jobs:
 
   build_and_push_latest-stable-2_12:
     runs-on: ubuntu-20.04
-    name: Build and push latest tag from devel and on new commits Ansible 2.12
+    name: Build and push stable-2.12 tag from devel and on new commits Ansible 2.12
     steps:
       - uses: actions/checkout@v2
 
@@ -87,3 +87,47 @@ jobs:
         run: |
          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
          docker push quay.io/lumarel/ee-lint:stable-2.12
+
+  build_and_push_latest-vsts:
+    runs-on: ubuntu-20.04
+    name: Build and push latest-vsts tag from devel
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+          docker build . --file Dockerfile --tag quay.io/lumarel/ee-lint:latest-vsts
+          docker push quay.io/lumarel/ee-lint:latest-vsts
+
+  build_and_push_latest-stable-2_11-vsts:
+    runs-on: ubuntu-20.04
+    name: Build and push stable-2.11-vsts tag from devel
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        env:
+          DOCKER_BUILDKIT: 1
+          ANSIBLE_BRANCH: 2.11
+        run: |
+          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+          docker build . --file Dockerfile --tag quay.io/lumarel/ee-lint:stable-2.11-vsts
+          docker push quay.io/lumarel/ee-lint:stable-2.11-vsts
+
+  build_and_push_latest-stable-2_12-vsts:
+    runs-on: ubuntu-20.04
+    name: Build and push stable-2.12-vsts tag from devel
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        env:
+          DOCKER_BUILDKIT: 1
+          ANSIBLE_BRANCH: 2.12
+        run: |
+          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+          docker build . --file Dockerfile --tag quay.io/lumarel/ee-lint:stable-2.12-vsts
+          docker push quay.io/lumarel/ee-lint:stable-2.12-vsts
