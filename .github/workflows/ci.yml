@@ -47,6 +47,28 @@ jobs:
         run: |
           tox -e docker
 
+  podman-vsts:
+    runs-on: ubuntu-20.04
+    name: Podman vsts image
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          podman build . --file Dockerfile
+
+  docker-vsts:
+    runs-on: ubuntu-20.04
+    name: Docker vsts image
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker build . --file Dockerfile
+
 #  check_diff:
 #    runs-on: ubuntu-20.04
 #    name: Ensure build context is up-to-date
