@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+git status --porcelain
+
 DIRTY=$(git status --porcelain | wc -l)
 if [ "$DIRTY" -ne 0 ]; then
     echo "ERROR: ansible-builder context is out of date, please re-run: "
