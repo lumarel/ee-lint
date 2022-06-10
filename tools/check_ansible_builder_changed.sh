@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git status --porcelain
+echo $(git status --porcelain)
 
 DIRTY=$(git status --porcelain | wc -l)
 if [ "$DIRTY" -ne 0 ]; then
