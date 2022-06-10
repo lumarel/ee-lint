@@ -28,8 +28,5 @@ COPY --from=builder /output/ /output
 RUN /output/install-from-bindep \
   && rm -rf /output
 
-ADD certs /etc/pki/ca-trust/source/anchors
-RUN update-ca-trust
-
 ENTRYPOINT []
 CMD /bin/bash
