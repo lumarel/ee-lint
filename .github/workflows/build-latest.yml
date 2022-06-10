@@ -88,50 +88,6 @@ jobs:
          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
          docker push quay.io/lumarel/ee-lint:stable-2.12
 
-  build_and_push_latest-ansible-box:
-    runs-on: ubuntu-20.04
-    name: Build and push latest tag from devel
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install dependencies
-        env:
-          DOCKER_BUILDKIT: 1
-        run: |
-          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
-          docker build . --file Dockerfile --tag quay.io/lumarel/ansible-box:latest
-          docker push quay.io/lumarel/ansible-box:latest
-
-  build_and_push_latest-ansible-box-stable-2_11:
-    runs-on: ubuntu-20.04
-    name: Build and push stable-2.11 tag from devel
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install dependencies
-        env:
-          DOCKER_BUILDKIT: 1
-          ANSIBLE_BRANCH: 2.11
-        run: |
-          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
-          docker build . --file Dockerfile --tag quay.io/lumarel/ansible-box:stable-2.11
-          docker push quay.io/lumarel/ansible-box:stable-2.11
-
-  build_and_push_latest-ansible-box-stable-2_12:
-    runs-on: ubuntu-20.04
-    name: Build and push stable-2.12 tag from devel
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install dependencies
-        env:
-          DOCKER_BUILDKIT: 1
-          ANSIBLE_BRANCH: 2.12
-        run: |
-          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
-          docker build . --file Dockerfile --tag quay.io/lumarel/ansible-box:stable-2.12
-          docker push quay.io/lumarel/ansible-box:stable-2.12
-
   build_and_push_latest-non_runner:
     runs-on: ubuntu-20.04
     name: Build and push nr-latest tag from devel and on new commits
