@@ -9,6 +9,7 @@ on:
     # build every month
     - cron: '0 0 1 * *'
 
+jobs:
   build_and_push_latest-ansible-box:
     runs-on: ubuntu-20.04
     name: Build and push latest tag from ansible-box
