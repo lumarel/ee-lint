@@ -47,9 +47,9 @@ jobs:
         run: |
           tox -e docker
 
-  podman-vsts:
+  podman-ansible-box:
     runs-on: ubuntu-20.04
-    name: Podman vsts image
+    name: Podman ansible-box image
     steps:
       - uses: actions/checkout@v2
 
@@ -57,9 +57,9 @@ jobs:
         run: |
           podman build . --file Dockerfile
 
-  docker-vsts:
+  docker-ansible-box:
     runs-on: ubuntu-20.04
-    name: Docker vsts image
+    name: Docker ansible-box image
     steps:
       - uses: actions/checkout@v2
 
