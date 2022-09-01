@@ -21,7 +21,7 @@ jobs:
           DOCKER_BUILDKIT: 1
         run: |
           echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
-          docker build . --file Dockerfile --tag quay.io/lumarel/ansible-box:latest
+          docker build . --file Containerfile-ansible-box --tag quay.io/lumarel/ansible-box:latest
           docker push quay.io/lumarel/ansible-box:latest
 
   build_and_push_latest-ansible-box-stable-2_11:
@@ -36,7 +36,7 @@ jobs:
           ANSIBLE_BRANCH: 2.11
         run: |
           echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
-          docker build . --file Dockerfile --tag quay.io/lumarel/ansible-box:stable-2.11
+          docker build . --file Containerfile-ansible-box --tag quay.io/lumarel/ansible-box:stable-2.11
           docker push quay.io/lumarel/ansible-box:stable-2.11
 
   build_and_push_latest-ansible-box-stable-2_12:
@@ -51,5 +51,5 @@ jobs:
           ANSIBLE_BRANCH: 2.12
         run: |
           echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
-          docker build . --file Dockerfile --tag quay.io/lumarel/ansible-box:stable-2.12
+          docker build . --file Containerfile-ansible-box --tag quay.io/lumarel/ansible-box:stable-2.12
           docker push quay.io/lumarel/ansible-box:stable-2.12
