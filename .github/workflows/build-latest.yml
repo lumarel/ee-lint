@@ -11,12 +11,12 @@ on:
 
 jobs:
   build_and_push_latest:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push latest tag from devel and on new commits
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -37,12 +37,12 @@ jobs:
          docker push quay.io/lumarel/ee-lint:latest
 
   build_and_push_latest-stable-2_11:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push stable-2.11 tag from devel
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -63,12 +63,12 @@ jobs:
          docker push quay.io/lumarel/ee-lint:stable-2.11
 
   build_and_push_latest-stable-2_12:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push stable-2.12 tag from devel and on new commits Ansible 2.12
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -89,12 +89,12 @@ jobs:
          docker push quay.io/lumarel/ee-lint:stable-2.12
 
   build_and_push_latest-non_runner:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push nr-latest tag from devel and on new commits
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -115,12 +115,12 @@ jobs:
          docker push quay.io/lumarel/ee-lint:nr-latest
 
   build_and_push_latest-non_runner-stable-2_11:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push nr-stable-2.11 tag from devel
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -141,12 +141,12 @@ jobs:
          docker push quay.io/lumarel/ee-lint:nr-stable-2.11
 
   build_and_push_latest-non_runner-stable-2_12:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push nr-stable-2.12 tag from devel and on new commits Ansible 2.12
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 

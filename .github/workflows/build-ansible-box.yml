@@ -11,10 +11,10 @@ on:
 
 jobs:
   build_and_push_latest-ansible-box:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push latest tag from ansible-box
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install dependencies
         env:
@@ -25,10 +25,10 @@ jobs:
           docker push quay.io/lumarel/ansible-box:latest
 
   build_and_push_latest-ansible-box-stable-2_11:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push stable-2.11 tag from ansible-box
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install dependencies
         env:
@@ -40,10 +40,10 @@ jobs:
           docker push quay.io/lumarel/ansible-box:stable-2.11
 
   build_and_push_latest-ansible-box-stable-2_12:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push stable-2.12 tag from ansible-box
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install dependencies
         env:
