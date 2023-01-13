@@ -11,12 +11,12 @@ on:
 
 jobs:
   build_and_push_latest:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push latest tag from devel and on new commits
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -37,12 +37,12 @@ jobs:
          docker push quay.io/lumarel/ee-lint:latest
 
   build_and_push_latest-stable-2_11:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push stable-2.11 tag from devel
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -63,12 +63,12 @@ jobs:
          docker push quay.io/lumarel/ee-lint:stable-2.11
 
   build_and_push_latest-stable-2_12:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push stable-2.12 tag from devel and on new commits Ansible 2.12
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -88,13 +88,39 @@ jobs:
          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
          docker push quay.io/lumarel/ee-lint:stable-2.12
 
+  build_and_push_latest-stable-2_13:
+    runs-on: ubuntu-latest
+    name: Build and push stable-2.13 tag from devel and on new commits Ansible 2.13
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox
+
+      - name: Build image
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          tox -e docker-stable-2.13 -- --tag=quay.io/lumarel/ee-lint:stable-2.13
+
+      - name: Push images
+        run: |
+         echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+         docker push quay.io/lumarel/ee-lint:stable-2.13
+
   build_and_push_latest-non_runner:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push nr-latest tag from devel and on new commits
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -115,12 +141,12 @@ jobs:
          docker push quay.io/lumarel/ee-lint:nr-latest
 
   build_and_push_latest-non_runner-stable-2_11:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push nr-stable-2.11 tag from devel
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -141,12 +167,12 @@ jobs:
          docker push quay.io/lumarel/ee-lint:nr-stable-2.11
 
   build_and_push_latest-non_runner-stable-2_12:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and push nr-stable-2.12 tag from devel and on new commits Ansible 2.12
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
@@ -165,3 +191,29 @@ jobs:
         run: |
          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
          docker push quay.io/lumarel/ee-lint:nr-stable-2.12
+
+  build_and_push_latest-non_runner-stable-2_13:
+    runs-on: ubuntu-latest
+    name: Build and push nr-stable-2.13 tag from devel and on new commits Ansible 2.13
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox
+
+      - name: Build image
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          tox -e docker-nr-stable-2.13 -- --tag=quay.io/lumarel/ee-lint:nr-stable-2.13
+
+      - name: Push images
+        run: |
+         echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+         docker push quay.io/lumarel/ee-lint:nr-stable-2.13

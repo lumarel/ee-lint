@@ -1,1 +1,2 @@
 flit-core  # ptyprocess
+Cython >= 0.29.29, < 3.0.0
