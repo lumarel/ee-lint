@@ -53,3 +53,18 @@ jobs:
           echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
           docker build . --file Containerfile-ansible-box --tag quay.io/lumarel/ansible-box:stable-2.12
           docker push quay.io/lumarel/ansible-box:stable-2.12
+
+  build_and_push_latest-ansible-box-stable-2_13:
+    runs-on: ubuntu-latest
+    name: Build and push stable-2.13 tag from ansible-box
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        env:
+          DOCKER_BUILDKIT: 1
+          ANSIBLE_BRANCH: 2.13
+        run: |
+          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+          docker build . --file Containerfile-ansible-box --tag quay.io/lumarel/ansible-box:stable-2.13
+          docker push quay.io/lumarel/ansible-box:stable-2.13
