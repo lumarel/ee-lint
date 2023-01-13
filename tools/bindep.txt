@@ -30,3 +30,4 @@ python38-requests [platform:centos-8 platform:rhel-8]
 
 # krb5
 gcc [platform:centos-8 platform:rhel-8]
+python38-devel [platform:centos-8 platform:rhel-8]
