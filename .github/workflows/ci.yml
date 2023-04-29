@@ -7,46 +7,6 @@ on:
     branches: [main]
 
 jobs:
-  podman:
-    runs-on: ubuntu-latest
-    name: Podman
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.8"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install tox
-
-      - name: Build EE with Podman
-        run: |
-          tox -e podman
-
-  docker:
-    runs-on: ubuntu-latest
-    name: Docker
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.8"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install tox
-
-      - name: Build EE with Docker
-        env:
-          DOCKER_BUILDKIT: 1
-        run: |
-          tox -e docker
-
   podman-ansible-box:
     runs-on: ubuntu-latest
     name: Podman ansible-box image
